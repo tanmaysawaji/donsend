@@ -13,3 +13,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ADR-0003: authenticate WebSocket connections with a short-lived ticket
 - Walking skeleton: FastAPI health endpoint, React frontend, Docker Compose,
   GitHub Actions CI
+- Raspberry Pi 4B server setup: Ubuntu Server 24.04, Docker, Caddy (TLS),
+  DuckDNS DDNS — app live at https://donsend.duckdns.org
