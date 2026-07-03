@@ -15,3 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GitHub Actions CI
 - Raspberry Pi 4B server setup: Ubuntu Server 24.04, Docker, Caddy (TLS),
   DuckDNS DDNS — app live at https://donsend.duckdns.org
+- Dependabot for automated dependency updates (npm, pip, GitHub Actions)
+- CodeQL scanning on every PR and weekly schedule
+- Branch protection on main: PR required, CI must pass, force pushes blocked
+- GPG commit signing
