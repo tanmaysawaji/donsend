@@ -20,15 +20,24 @@ def engine() -> Generator[Engine, None, None]:
     admin_engine = create_engine(TEST_DATABASE_URL)
     with admin_engine.begin() as conn:
         conn.execute(text(f"CREATE SCHEMA IF NOT EXISTS {TEST_SCHEMA}"))
+    admin_engine.dispose()
 
-    engine = admin_engine.execution_options(
-        schema_translate_map={None: TEST_SCHEMA}
+    # search_path is a Postgres session setting, so it applies to every
+    # query on this connection — raw SQL included — unlike
+    # schema_translate_map, which only rewrites SQLAlchemy-compiled
+    # statements and silently does nothing for text() SQL.
+    engine = create_engine(
+        TEST_DATABASE_URL,
+        connect_args={"options": f"-c search_path={TEST_SCHEMA}"},
     )
     Base.metadata.create_all(engine)
 
     yield engine
 
     Base.metadata.drop_all(engine)
+    engine.dispose()
+
+    admin_engine = create_engine(TEST_DATABASE_URL)
     with admin_engine.begin() as conn:
         conn.execute(text(f"DROP SCHEMA IF EXISTS {TEST_SCHEMA} CASCADE"))
     admin_engine.dispose()
