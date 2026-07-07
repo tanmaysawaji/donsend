@@ -24,3 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ADR-0004: V1 database schema — users, invite codes, friendships, messages
 - Admin CLI script to generate single-use invite codes
   (`uv run python -m scripts.create_invite`)
+- Password hashing utility using Argon2id (`app/core/security.py`)
+- `sessions` table for single-active-session refresh token rotation
+- ADR-0005: refresh token rotation via a single-session table
+- Access token JWT create/decode utilities (`app/core/security.py`)

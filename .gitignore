@@ -21,6 +21,9 @@ node_modules/
 frontend/dist/
 frontend/.vite/
 
+# Editor
+.vscode/
+
 # OS
 .DS_Store
 Thumbs.db

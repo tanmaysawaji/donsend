@@ -29,5 +29,6 @@ Skip it for routine, easily-reversible choices. Don't turn this into ceremony.
 | [0002](0002-jwt-storage.md) | Store the JWT refresh token in an httpOnly cookie | Accepted |
 | [0003](0003-websocket-auth.md) | Authenticate WebSocket connections with a short-lived ticket | Accepted |
 | [0004](0004-v1-database-schema.md) | V1 database schema — users, invite codes, friendships, messages | Accepted |
+| [0005](0005-refresh-token-rotation.md) | Refresh token rotation via a single-session table | Accepted |
 
 > Add a row per ADR. The first ADR below is the conventional "we will use ADRs" record.
