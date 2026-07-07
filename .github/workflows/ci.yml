@@ -47,6 +47,8 @@ jobs:
       - name: Test (pytest)
         env:
           TEST_DATABASE_URL: postgresql+psycopg://donsend:password@localhost:5432/donsend
+          DATABASE_URL: postgresql+psycopg://donsend:password@localhost:5432/donsend
+          SECRET_KEY: ci-test-secret-not-used-in-production-32-bytes-min
         run: uv run pytest
 
   frontend:
