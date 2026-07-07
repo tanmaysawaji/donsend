@@ -22,3 +22,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - V1 database schema: `users`, `invite_codes`, `friendships`, `messages`
   tables via SQLAlchemy models and an initial Alembic migration
 - ADR-0004: V1 database schema — users, invite codes, friendships, messages
+- Admin CLI script to generate single-use invite codes
+  (`uv run python -m scripts.create_invite`)
