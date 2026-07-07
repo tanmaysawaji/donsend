@@ -42,7 +42,7 @@ jobs:
         run: uv run ruff check .
 
       - name: Typecheck (mypy)
-        run: uv run mypy app/ tests/
+        run: uv run mypy app/ tests/ scripts/
 
       - name: Test (pytest)
         env:
