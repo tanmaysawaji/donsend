@@ -28,3 +28,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `sessions` table for single-active-session refresh token rotation
 - ADR-0005: refresh token rotation via a single-session table
 - Access token JWT create/decode utilities (`app/core/security.py`)
+- `POST /auth/register` endpoint: validates a single-use invite code, checks
+  email/username uniqueness, hashes the password, and creates the user
