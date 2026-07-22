@@ -30,3 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Access token JWT create/decode utilities (`app/core/security.py`)
 - `POST /auth/register` endpoint: validates a single-use invite code, checks
   email/username uniqueness, hashes the password, and creates the user
+- `POST /auth/login` endpoint: verifies credentials in constant time, issues
+  an access token, and sets a rotated refresh token as an httpOnly cookie
