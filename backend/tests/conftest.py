@@ -2,11 +2,14 @@ import os
 from collections.abc import Generator
 
 import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import Engine, create_engine, text
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session
 
+from app.api.deps import get_db
 from app.db import models  # noqa: F401  — registers tables on Base.metadata
 from app.db.base import Base
+from app.main import app
 
 TEST_DATABASE_URL = os.environ.get(
     "TEST_DATABASE_URL",
@@ -45,8 +48,25 @@ def engine() -> Generator[Engine, None, None]:
 
 @pytest.fixture()
 def db_session(engine: Engine) -> Generator[Session, None, None]:
-    session_factory = sessionmaker(bind=engine)
-    session = session_factory()
+    connection = engine.connect()
+    transaction = connection.begin()
+    # join_transaction_mode="create_savepoint": if code under test calls
+    # session.commit() (as a real endpoint must), it only releases a
+    # SAVEPOINT, not the outer transaction below — so rolling that back
+    # afterward undoes everything regardless of how many times the code
+    # under test committed.
+    session = Session(bind=connection, join_transaction_mode="create_savepoint")
     yield session
-    session.rollback()
     session.close()
+    transaction.rollback()
+    connection.close()
+
+
+@pytest.fixture()
+def client(db_session: Session) -> Generator[TestClient, None, None]:
+    def override_get_db() -> Generator[Session, None, None]:
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
+    app.dependency_overrides.clear()
