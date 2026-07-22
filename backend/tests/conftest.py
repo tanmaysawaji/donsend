@@ -68,5 +68,10 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
         yield db_session
 
     app.dependency_overrides[get_db] = override_get_db
-    yield TestClient(app)
+    # base_url uses https:// because our refresh token cookie is marked
+    # Secure (production runs behind real TLS) — httpx's cookie jar
+    # correctly refuses to resend a Secure cookie over a plain http://
+    # connection, same as a real browser, so testing multi-request auth
+    # flows requires the client to appear to be on HTTPS too.
+    yield TestClient(app, base_url="https://testserver")
     app.dependency_overrides.clear()
