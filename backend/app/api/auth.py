@@ -141,3 +141,22 @@ def refresh(
     _set_refresh_token_cookie(response, new_refresh_token)
 
     return TokenResponse(access_token=create_access_token(user_session.user_id))
+
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+def logout(
+    response: Response,
+    db: Session = Depends(get_db),
+    refresh_token: str | None = Cookie(default=None),
+) -> None:
+    if refresh_token is not None:
+        user_session = db.execute(
+            select(UserSession).where(
+                UserSession.refresh_token_hash == hash_refresh_token(refresh_token)
+            )
+        ).scalar_one_or_none()
+        if user_session is not None:
+            db.delete(user_session)
+            db.commit()
+
+    response.delete_cookie(key="refresh_token", path="/auth")
