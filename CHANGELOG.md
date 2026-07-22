@@ -34,3 +34,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   an access token, and sets a rotated refresh token as an httpOnly cookie
 - `POST /auth/refresh` endpoint: rotates the refresh token and issues a new
   access token
+- `POST /auth/logout` endpoint: deletes the session and clears the refresh
+  token cookie, idempotently
